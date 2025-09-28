@@ -7,11 +7,23 @@ public class Q5 {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
-        String sentence ;
         System.out.println("Enter the sentence : ");
-        sentence = input.nextLine();
+        String sentence = input.nextLine();
 
-//        StringTokenizer stringTokenizer = new StringTokenizer(sentence," ");
-//        System.out.println(stringTokenizer.toString());
+        StringBuilder stringBuilder = new StringBuilder();
+        StringTokenizer stringTokenizer = new StringTokenizer(sentence,",.!?;: ");
+
+        while(stringTokenizer.hasMoreTokens()){
+            String convert_lower = stringTokenizer.nextToken().toLowerCase();
+            stringBuilder.append(convert_lower);
+        }
+        String original = stringBuilder.toString();
+        String reversed = new StringBuilder(original).reverse().toString();
+
+        if(original.equals(reversed)){
+            System.out.println("It is a palindrome.");
+        } else {
+            System.out.println("It is not a palindrome.");
+        }
     }
 }
