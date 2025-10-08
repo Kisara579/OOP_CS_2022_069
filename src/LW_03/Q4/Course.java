@@ -11,6 +11,9 @@ public class Course {
         this.lecturer = lecturer;
     }
 
+    public Course() {
+    }
+
     public String getCourseName() {
         return courseName;
     }

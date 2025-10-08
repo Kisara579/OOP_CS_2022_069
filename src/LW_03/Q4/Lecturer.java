@@ -10,6 +10,9 @@ public class Lecturer {
     }
 
 
+    public Lecturer() {
+    }
+
     public String getLecturerName() {
         return lecturerName;
     }

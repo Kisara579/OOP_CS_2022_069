@@ -12,6 +12,9 @@ public class Student {
         this.courseFollowing = courseFollowing;
     }
 
+    public Student() {
+    }
+
     public String getStudentName() {
         return studentName;
     }
