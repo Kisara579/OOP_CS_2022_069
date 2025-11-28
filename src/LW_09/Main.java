@@ -1,8 +1,8 @@
-package LW_08;
+package LW_09;
 
-public class main {
+public class Main {
     public static void main(String[] args) {
-        SignUpPage signUp = new SignUpPage();
+        SignUp signUp = new SignUp();
         signUp.setVisible(true);
     }
 }

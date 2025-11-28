@@ -3,209 +3,244 @@ package LW_07;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+import java.sql.*;
 public class RegistrationForm extends JFrame implements ActionListener {
 
-    // Components
-    private Container c;
-    private JLabel title, nameLabel, mobileLabel, genderLabel, dobLabel, addressLabel;
-    private JTextField nameText, mobileText;
-    private JRadioButton male, female;
-    private ButtonGroup genderGroup;
-    private JComboBox<String> day, month, year;
-    private JTextArea addressText, output;
-    private JCheckBox terms;
-    private JButton submit, reset;
-    private JLabel resLabel;
+    final String[] dates = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
+    final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+    final String[] years = {"1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010"};
 
-    // Data for combo boxes
-    private String[] days = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-            "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-            "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
+    private String url = "jdbc:mysql://localhost:3306/oop?useSSL=false";
+    private String uname = "root";
+    private String password = "";
 
-    private String[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
-    private String[] years = { "1990", "1991", "1992", "1993", "1994", "1995",
-            "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004",
-            "2005", "2006", "2007", "2008", "2009", "2010" };
+    JTextField nameText, mobileText;
+    JRadioButton male, female;
+    JComboBox day, month, year;
+    JTextArea addressText, outputText;
+    JCheckBox terms;
+    JButton submit, reset;
 
-    // Constructor
-    public RegistrationForm() {
-        setTitle("Registration Form");
-        setBounds(300, 90, 800, 600);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    RegistrationForm() {
+
+        setSize(1000, 650);
         setResizable(false);
+        setBackground(Color.WHITE);
+        Container contentPane = getContentPane();
+        contentPane.setLayout(null);
 
-        c = getContentPane();
-        c.setLayout(null);
+        JLabel title = new JLabel("Registration Form");
+        title.setForeground(Color.BLUE);
+        title.setSize(230, 75);
+        title.setLocation(385, 10);
+        title.setFont(new Font("Arial", Font.BOLD, 26));
+        contentPane.add(title);
 
-        // Title
-        title = new JLabel("Registration Form");
-        title.setFont(new Font("Arial", Font.PLAIN, 24));
-        title.setSize(300, 30);
-        title.setLocation(250, 30);
-        c.add(title);
-
-        // Name
-        nameLabel = new JLabel("Name");
-        nameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        nameLabel.setSize(100, 20);
-        nameLabel.setLocation(100, 100);
-        c.add(nameLabel);
+        JLabel name = new JLabel("Name: ");
+        name.setForeground(Color.BLUE);
+        name.setSize(150, 50);
+        name.setLocation(50, 75);
+        name.setFont(new Font("Arial", Font.BOLD, 18));
+        contentPane.add(name);
 
         nameText = new JTextField();
-        nameText.setFont(new Font("Arial", Font.PLAIN, 15));
-        nameText.setSize(190, 20);
-        nameText.setLocation(200, 100);
-        c.add(nameText);
+        nameText.setForeground(Color.RED);
+        nameText.setSize(300, 30);
+        nameText.setLocation(200, 85);
+        nameText.setFont(new Font("Arial", Font.BOLD, 18));
+        contentPane.add(nameText);
 
-        // Mobile
-        mobileLabel = new JLabel("Mobile");
-        mobileLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        mobileLabel.setSize(100, 20);
-        mobileLabel.setLocation(100, 150);
-        c.add(mobileLabel);
+        JLabel mobile = new JLabel("Mobile: ");
+        mobile.setForeground(Color.BLUE);
+        mobile.setSize(150, 50);
+        mobile.setLocation(50, 125);
+        mobile.setFont(new Font("Arial", Font.BOLD, 18));
+        contentPane.add(mobile);
 
         mobileText = new JTextField();
-        mobileText.setFont(new Font("Arial", Font.PLAIN, 15));
-        mobileText.setSize(190, 20);
-        mobileText.setLocation(200, 150);
-        c.add(mobileText);
+        mobileText.setForeground(Color.RED);
+        mobileText.setSize(300, 30);
+        mobileText.setLocation(200, 135);
+        mobileText.setFont(new Font("Arial", Font.BOLD, 18));
+        contentPane.add(mobileText);
 
-        // Gender
-        genderLabel = new JLabel("Gender");
-        genderLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        genderLabel.setSize(100, 20);
-        genderLabel.setLocation(100, 200);
-        c.add(genderLabel);
+        JLabel gender = new JLabel("Gender: ");
+        gender.setForeground(Color.BLUE);
+        gender.setSize(150, 50);
+        gender.setLocation(50, 175);
+        gender.setFont(new Font("Arial", Font.BOLD, 18));
+        contentPane.add(gender);
 
         male = new JRadioButton("Male");
-        male.setFont(new Font("Arial", Font.PLAIN, 15));
         male.setSelected(true);
-        male.setSize(75, 20);
-        male.setLocation(200, 200);
-        c.add(male);
+        male.setForeground(Color.BLUE);
+        male.setSize(150, 30);
+        male.setLocation(200, 185);
+        male.setFont(new Font("Arial", Font.BOLD, 18));
+        contentPane.add(male);
 
         female = new JRadioButton("Female");
-        female.setFont(new Font("Arial", Font.PLAIN, 15));
         female.setSelected(false);
-        female.setSize(80, 20);
-        female.setLocation(275, 200);
-        c.add(female);
+        female.setForeground(Color.BLUE);
+        female.setSize(150, 30);
+        female.setLocation(350, 185);
+        female.setFont(new Font("Arial", Font.BOLD, 18));
+        contentPane.add(female);
 
-        genderGroup = new ButtonGroup();
-        genderGroup.add(male);
-        genderGroup.add(female);
+        ButtonGroup genderGrp = new ButtonGroup();
+        genderGrp.add(male);
+        genderGrp.add(female);
 
-        // DOB
-        dobLabel = new JLabel("DOB");
-        dobLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        dobLabel.setSize(100, 20);
-        dobLabel.setLocation(100, 250);
-        c.add(dobLabel);
+        JLabel dob = new JLabel("DOB: ");
+        dob.setForeground(Color.BLUE);
+        dob.setSize(150, 50);
+        dob.setLocation(50, 225);
+        dob.setFont(new Font("Arial", Font.BOLD, 18));
+        contentPane.add(dob);
 
-        day = new JComboBox<>(days);
-        day.setFont(new Font("Arial", Font.PLAIN, 15));
-        day.setSize(60, 20);
-        day.setLocation(200, 250);
-        c.add(day);
+        day = new JComboBox(dates);
+        day.setForeground(Color.BLUE);
+        day.setSize(90, 30);
+        day.setLocation(200, 230);
+        day.setFont(new Font("Arial", Font.BOLD, 18));
+        contentPane.add(day);
 
-        month = new JComboBox<>(months);
-        month.setFont(new Font("Arial", Font.PLAIN, 15));
-        month.setSize(90, 20);
-        month.setLocation(270, 250);
-        c.add(month);
+        month = new JComboBox(months);
+        month.setForeground(Color.BLUE);
+        month.setSize(115, 30);
+        month.setLocation(290, 230);
+        month.setFont(new Font("Arial", Font.BOLD, 18));
+        contentPane.add(month);
 
-        year = new JComboBox<>(years);
-        year.setFont(new Font("Arial", Font.PLAIN, 15));
-        year.setSize(80, 20);
-        year.setLocation(370, 250);
-        c.add(year);
+        year = new JComboBox(years);
+        year.setForeground(Color.BLUE);
+        year.setSize(90, 30);
+        year.setLocation(405, 230);
+        year.setFont(new Font("Arial", Font.BOLD, 18));
+        contentPane.add(year);
 
-        // Address
-        addressLabel = new JLabel("Address");
-        addressLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        addressLabel.setSize(100, 20);
-        addressLabel.setLocation(100, 300);
-        c.add(addressLabel);
+        JLabel address = new JLabel("Address: ");
+        address.setForeground(Color.BLUE);
+        address.setSize(150, 50);
+        address.setLocation(50, 275);
+        address.setFont(new Font("Arial", Font.BOLD, 18));
+        contentPane.add(address);
 
         addressText = new JTextArea();
-        addressText.setFont(new Font("Arial", Font.PLAIN, 15));
-        addressText.setSize(200, 75);
-        addressText.setLocation(200, 300);
+        addressText.setForeground(Color.RED);
+        addressText.setSize(300, 150);
+        addressText.setLocation(200, 275);
+        addressText.setFont(new Font("Arial", Font.BOLD, 18));
         addressText.setLineWrap(true);
-        c.add(addressText);
+        contentPane.add(addressText);
 
-        // Terms checkbox
-        terms = new JCheckBox("Accept Terms And Conditions.");
-        terms.setFont(new Font("Arial", Font.PLAIN, 15));
-        terms.setSize(250, 20);
-        terms.setLocation(150, 400);
-        c.add(terms);
+        outputText = new JTextArea();
+        outputText.setForeground(Color.RED);
+        outputText.setSize(300, 340);
+        outputText.setLocation(600, 85);
+        outputText.setFont(new Font("Arial", Font.BOLD, 18));
+        outputText.setLineWrap(true);
+        contentPane.add(outputText);
 
-        // Buttons
+        terms = new JCheckBox("Accept terms & conditions.");
+        terms.setForeground(Color.BLUE);
+        terms.setSize(300, 50);
+        terms.setLocation(50, 450);
+        terms.setFont(new Font("Arial", Font.BOLD, 18));
+        contentPane.add(terms);
+
         submit = new JButton("Submit");
-        submit.setFont(new Font("Arial", Font.PLAIN, 15));
-        submit.setSize(100, 20);
-        submit.setLocation(150, 450);
+        submit.setForeground(Color.WHITE);
+        submit.setBackground(Color.BLUE);
+        submit.setSize(200, 50);
+        submit.setLocation(150, 520);
+        submit.setFont(new Font("Arial", Font.BOLD, 35));
         submit.addActionListener(this);
-        c.add(submit);
+        contentPane.add(submit);
 
         reset = new JButton("Reset");
-        reset.setFont(new Font("Arial", Font.PLAIN, 15));
-        reset.setSize(100, 20);
-        reset.setLocation(270, 450);
+        reset.setForeground(Color.WHITE);
+        reset.setBackground(Color.BLUE);
+        reset.setSize(200, 50);
+        reset.setLocation(550, 520);
+        reset.setFont(new Font("Arial", Font.BOLD, 35));
         reset.addActionListener(this);
-        c.add(reset);
+        contentPane.add(reset);
 
-        // Output box
-        output = new JTextArea();
-        output.setFont(new Font("Arial", Font.PLAIN, 15));
-        output.setSize(300, 350);
-        output.setLocation(500, 100);
-        output.setLineWrap(true);
-        output.setEditable(false);
-        c.add(output);
+        //java Database Connection
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException exception) {
+            exception.printStackTrace();
+        }
 
-        resLabel = new JLabel("");
-        resLabel.setFont(new Font("Arial", Font.PLAIN, 15));
-        resLabel.setSize(500, 25);
-        resLabel.setLocation(150, 500);
-        c.add(resLabel);
+        try {
+            Connection connection =
+                    DriverManager.getConnection(url, uname, password);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
 
-        setVisible(true);
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == submit) {
-            if (terms.isSelected()) {
-                String data1 = "Name : " + nameText.getText() + "\n" +
-                        "Mobile : " + mobileText.getText() + "\n" +
-                        "Gender : " + (male.isSelected() ? "Male" : "Female") + "\n";
-                String data2 = "DOB : " + day.getSelectedItem() + " "
-                        + month.getSelectedItem() + " " + year.getSelectedItem() + "\n";
-                String data3 = "Address : " + addressText.getText() + "\n";
+        String nameTxt = nameText.getText();
+        String mobileTxt = mobileText.getText();
+        String genderTxt = "";
+        if (male.isSelected()) {
+            genderTxt = "Male";
+        } else if (female.isSelected()) {
+            genderTxt = "Female";
+        }
+        String dayTxt = day.getSelectedItem().toString();
+        String monthTxt = month.getSelectedItem().toString();
+        String yearTxt = year.getSelectedItem().toString();
+        String addressTxt = addressText.getText();
 
-                output.setText(data1 + data2 + data3);
-                resLabel.setText("Registration Successfully..");
+        JButton selectedBtn = (JButton) e.getSource();
+        if (selectedBtn == submit) {
+            if (terms.isSelected()) {
+                //Print details
+                System.out.println("Printing details.");
+                outputText.setText(" Name: " + nameTxt + "\n Mobile: " + mobileTxt + "\n Gender: " + genderTxt + "\n Date: " + dayTxt + "-" + monthTxt + "-" + yearTxt + "\n Address: " + addressTxt);
+
+                try {
+                    Connection connection =
+                            DriverManager.getConnection(url, uname, password);
+                    PreparedStatement preparedStmt =
+                            connection.prepareStatement("INSERT INTO `user` (`name`, `DOB`,`mobile`, `gender`, `address`) VALUES (?, ?, ?, ?, ?)");
+
+
+                    preparedStmt.setString(1, nameTxt);
+                    preparedStmt.setString(2, mobileTxt);
+                    preparedStmt.setString(3, genderTxt);
+                    preparedStmt.setString(4, dayTxt+" - "+monthTxt+" - "+yearTxt);
+                    preparedStmt.setString(5, addressTxt);
+                    preparedStmt.execute();
+                    connection.close();
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+
             } else {
-                output.setText("");
-                resLabel.setText("Please accept the terms & conditions.");
+                JOptionPane.showMessageDialog(this, "Please accept terms & conditions to submit.");
             }
-        } else if (e.getSource() == reset) {
-            String def = "";
-            nameText.setText(def);
-            mobileText.setText(def);
-            addressText.setText(def);
-            resLabel.setText(def);
-            output.setText(def);
-            terms.setSelected(false);
+        } else if (selectedBtn == reset) {
+            //reset everything
+            System.out.println("Resetting everything");
+            nameText.setText("");
+            mobileText.setText("");
+            male.setSelected(true);
+            female.setSelected(false);
             day.setSelectedIndex(0);
             month.setSelectedIndex(0);
             year.setSelectedIndex(0);
-            male.setSelected(true);
+            addressText.setText("");
+            terms.setSelected(false);
+            outputText.setText("");
         }
     }
 }

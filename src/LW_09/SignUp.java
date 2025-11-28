@@ -1,12 +1,12 @@
-package LW_08;
+package LW_09;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 
-
-public class SignUpPage extends JFrame implements ActionListener {
+class SignUp extends JFrame implements ActionListener {
 
     private final String[] date = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
     private final String[] month = {"January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
@@ -29,8 +29,7 @@ public class SignUpPage extends JFrame implements ActionListener {
     private String uname = "root";
     private String dbpassword = "";
 
-
-    public SignUpPage() {
+    public SignUp() {
         setTitle("Sign In");
         setBounds(570, 140, 400, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -224,18 +223,23 @@ public class SignUpPage extends JFrame implements ActionListener {
                 } else if (femaleButton.isSelected()) {
                     genderq = "Female";
                 }
+
                 String dayq = dateBox.getSelectedItem().toString();
                 String monthq = monthBox.getSelectedItem().toString();
                 String yearq = yearBox.getSelectedItem().toString();
                 String dobq = dayq + "-" + monthq + "-" + yearq;
 
                 String passwordq = PWField.getText();
+
                 JOptionPane.showMessageDialog(null,
                         "Name: " + nameq +
-                        "\nEmail: " + emailq +
-                        "\nGender: " + genderq +
-                        "\nDOB: " + dobq +
-                        "\nPassword: " + passwordq);
+                                "\nEmail: " + emailq +
+                                "\nGender: " + genderq +
+                                "\nDOB: " + dobq +
+                                "\nPassword: " + passwordq);
+
+
+
             try {
                 Connection con = DriverManager.getConnection(url, uname, dbpassword);
                 PreparedStatement pst = con.prepareStatement(
@@ -247,16 +251,50 @@ public class SignUpPage extends JFrame implements ActionListener {
                 pst.setString(5, passwordq);
                 pst.execute();
                 con.close();
+
+
+
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+
             } else {
                 JOptionPane.showMessageDialog(null, "Please confirm that you are not a robot.");
             }
+
         } else if (e.getSource() == SIButton) {
             String email = SIEMField.getText();
             String password = SIPWField.getText();
-            JOptionPane.showMessageDialog(null, "Login Successful!");
+
+            try {
+                Connection con = DriverManager.getConnection(url, uname,dbpassword);
+
+                PreparedStatement pst = con.prepareStatement(
+                        "SELECT * FROM `signup` WHERE `email` = ? AND `password` = ?"
+                );
+
+                pst.setString(1, email);
+                pst.setString(2, password);
+
+                ResultSet rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    JOptionPane.showMessageDialog(null, "Login Successful!");
+
+                    new HomeGUI();
+                    this.dispose();
+
+                } else {
+
+                    JOptionPane.showMessageDialog(null, "Incorrect email or password.");
+                }
+
+                con.close();
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Database error.");
+            }
 
         }
     }

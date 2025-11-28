@@ -11,9 +11,6 @@
 
 This repository contains comprehensive lab worksheet solutions for the Object-Oriented Programming course. Each lab worksheet (LW) focuses on different OOP concepts and programming techniques using Java.
 
-
-
-
 ### LW_01: Basic Java Programming
 
 Introduction to Java programming fundamentals including:
@@ -54,6 +51,20 @@ Advanced programming techniques and patterns:
 
 - Java Development Kit (JDK) 8 or higher
 - A Java IDE (IntelliJ IDEA, Eclipse, or VS Code with Java extensions)
+- MySQL Connector/J (for database-related labs)
+
+### Setup Instructions
+
+1. **Download MySQL Connector/J:**
+
+   - Visit [MySQL Connector/J Downloads](https://dev.mysql.com/downloads/connector/j/)
+   - Download version 9.5.0 or compatible version
+   - Extract the downloaded archive
+
+2. **Setup the connector:**
+   - Create a `Resources` folder in the project root directory
+   - Place the extracted `mysql-connector-j-9.5.0` folder inside `Resources/`
+   - Your structure should be: `Resources/mysql-connector-j-9.5.0/`
 
 ### Running the Programs
 
@@ -115,5 +126,3 @@ For any queries or discussions related to this repository, please reach out thro
 ---
 
 **Note:** This repository is continuously updated as new lab worksheets are completed throughout the semester.
-
-
