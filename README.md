@@ -125,4 +125,3 @@ For any queries or discussions related to this repository, please reach out thro
 
 ---
 
-**Note:** This repository is continuously updated as new lab worksheets are completed throughout the semester.
